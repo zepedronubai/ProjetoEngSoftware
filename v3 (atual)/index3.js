@@ -143,8 +143,8 @@ function createTable(){
     layout: "fitColumns",
     resizableColumns:false,
     pagination: "local",
-    paginationSizeSelector:[10, 20, 50, 100],
-    paginationSize: 10
+    paginationSizeSelector:[20, 50, 100],
+    paginationSize: 20
   });
 }
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,19 +8,32 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/2.0.0/luxon.min.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/5.2.1/css/tabulator.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style3.css">
-
 </head>
+
 <body>
+  <nav>
+    <img class="logo" src="images/logoES.png">
+  </nav>
 
-<div class="meioHeader">
+  <aside>
+    <ul>
+      <li><a class="active" href="#tabela">Tabela</a></li>
+      <li><a href="#aluno">Aluno</a></li>
+      <li><a href="#candidato">Candidato</a></li>
+      <li><a href="#myfenix">myFenix</a></li>
+    </ul>
+  </aside>
+
+  <section class="upload">
     <input type="file" id="ficheiro">
-    <button class="botaoDarkTheme" id="botaoDarkTheme">CLICA</button>
-</div>
+    <button id="botaoDarkTheme">Dark Theme</button>
+  </section>
 
-<div id="table"></div>
+  <section class="upload" id="table"></section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/5.2.1/js/tabulator.min.js"></script>
-<script src="index3.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/5.2.1/js/tabulator.min.js"></script>
+  <script src="index3.js"></script>
 
 </body>
+
 </html>

@@ -1,4 +1,4 @@
-*{
+* {
     margin: 0;
     padding: 0;
     font-weight: bold;
@@ -6,21 +6,58 @@
     font-size: 15px;
 }
 
-body{
+h1 {
+    font-size: 30px;
+}
+
+body {
     background-color: white;
-    color: black; 
+    color: black;
+}
+
+nav {
+    padding: 10px 0 10px 20px;
+    background-color: #0d28c2;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 20%;
+    background-color: #313644;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+
+li a {
+    display: block;
+    font-size: 20px;
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+}
+
+li a.active {
+    background-color: #262a35;
+    color: white;
+}
+
+li a:hover:not(.active) {
+    background-color: #2c313d;
+    color: white;
+}
+
+.logo {
+    width: 250px;
+}
+
+.upload {
+    margin: 1% 2% 0 22%;
 }
 
 .dark-mode {
-    background-color: #2a2a2a;
-    color: white;
-  }
-
-.dark-mode table th{
-    background-color:#0000a9;
-}
-
-.dark-mode input{
     background-color: #2a2a2a;
     color: white;
 }
