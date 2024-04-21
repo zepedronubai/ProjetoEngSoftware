@@ -10,11 +10,15 @@ var columns;
 var firstTimeOpeningCaracterizaocaoSalas = true
 
 var botao = document.getElementById("botaoDarkTheme")
+var count = 0;
 botao.addEventListener("click",darkTheme,false);
 function darkTheme(){
-    console.log("oi")
-    let htmlBody = document.body;
-    htmlBody.classList.toggle("dark-mode");        
+    count++;
+    if (count % 2 == 0){
+      let htmlBody = document.body;
+      htmlBody.classList.toggle("dark-mode");      
+    }
+     
 }
 
 document.getElementById("download-csv").addEventListener("click", function(){

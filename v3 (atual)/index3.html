@@ -11,7 +11,7 @@
 </head>
 
 <body>
-  <aside>
+  <aside style="z-index: 1000;">
     <ul>
       <li><a class="active" href="#tabela">Tabela</a></li>
       <li><a href="#aluno">Aluno</a></li>
@@ -22,16 +22,25 @@
 
   <nav>
     <img class="logo" src="images/logoES.png">
+    
+    <div class="toggle-switch">
+      
+      <button id="botaoDarkTheme">
+        <input class="toggle-input" id="toggle" type="checkbox">
+        <label class="toggle-label" for="toggle"></label>
+      </button>
+
+    </div>
   </nav>
 
   <section class="upload">
     <input type="file" id="ficheiro">
-    <button id="botaoDarkTheme">Dark Theme</button>
 
-      <button class="downloadcsv" id="download-csv">Download CSV</button>
 
-      <input type="file" id="fileCaracterizacaoSalas" style="display: none;">
-      <label for="fileCaracterizacaoSalas" id="fileCaracterizacaoSalas">Mostrar Salas</label>
+    <button class="downloadcsv" id="download-csv">Download CSV</button>
+
+    <input type="file" id="fileCaracterizacaoSalas" style="display: none;">
+    <label for="fileCaracterizacaoSalas" id="fileCaracterizacaoSalas">Mostrar Salas</label>
   </section>
 
   <section class="tableclass" id="table"></section>
