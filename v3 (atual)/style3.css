@@ -65,6 +65,10 @@ li a:hover:not(.active) {
     
 }
 
+.filterHorarioSection{
+  padding: 0 0 0 20%;
+}
+
 #table{
   z-index: 10;
 }

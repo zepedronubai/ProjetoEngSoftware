@@ -3,11 +3,15 @@ var titulos = [];
 var linhas = [];
 var csvData;
 var table;
+var table2;
 var csvLinesCaracterizacaoSalas;
 var columnsCaracterizacaoSalas;
 var csvLines;
 var columns;
 var firstTimeOpeningCaracterizaocaoSalas = true
+
+//filterHorarioForm
+var form
 
 var botao = document.getElementById("botaoDarkTheme")
 var count = 0;
@@ -24,6 +28,19 @@ function darkTheme(){
 document.getElementById("download-csv").addEventListener("click", function(){
   table.download("csv", "data.csv");
 });
+
+let oi=0
+document.getElementById("botaoteste").addEventListener("click", function(){
+  testeLeitura();
+  oi++
+});
+
+function testeLeitura(){
+  if(oi != 0)
+    table.setFilter("Turma", "=", "DFB1");
+  else
+  table.addFilter("Dia da s   emana", "=", "Qua");
+}
 
 
 
@@ -56,7 +73,7 @@ function filtrarFile(content){
 
   // Remove the first line (column headers) from csvLines
   csvLines.shift();
-
+  console.log(columns)
   createTable();
 }
 
@@ -177,15 +194,15 @@ function createTable(){
     paginationSizeSelector:[20, 50, 100],
     paginationSize: 20
   });
+  //depois de criar a tabela, cria um form para filtrá-la
+  createFilterHorarioForm()
 }
 
 //handlers da tabela caracterização sala
-fileCaracterizacaoSalas
 
 document.getElementById("fileCaracterizacaoSalas").addEventListener("change", (event)=>{
   const file = event.target.files[0];
   const reader = new FileReader();
-  console.log("ois")
   //leitor do ficheiro
   reader.onload = function () {
       const content = reader.result;
@@ -203,6 +220,7 @@ document.getElementById("fileCaracterizacaoSalas").addEventListener("change", (e
 
 function filtrarFileCaracterizacaoSalas(content){
   
+  
   // Split CSV data into lines
   csvLinesCaracterizacaoSalas = content.split('\n');
 
@@ -212,18 +230,120 @@ function filtrarFileCaracterizacaoSalas(content){
   // Remove the first line (column headers) from csvLines
   csvLinesCaracterizacaoSalas.shift();
 
+  console.log(csvLinesCaracterizacaoSalas[0])
+  console.log(columnsCaracterizacaoSalas)
   createSecondTable();
 }
 
+//depois de criar a tabela é chamado para criar o form de filtro para o horario
+function createFilterHorarioForm(){
+  // Create a form element
+    form = document.createElement('form');
+
+    // Set form attributes (optional)
+    form.setAttribute('id', 'myForm');
+    form.setAttribute('action', 'submit.php');
+    form.setAttribute('method', 'post');
+
+    for(let i=0;i!=columns.length;i++){
+
+      //label para cada input
+      var label = document.createElement('label');
+      label.textContent = columns[i]; 
+      //para cada elemento do titulo, criar um input para ser filtrado
+      console.log(columns[i])
+      var input1 = document.createElement('input');
+      var tipoDeInput = tipoDeInputASerCriado(columns[i])
+      input1.setAttribute('type', tipoDeInput);
+      input1.setAttribute('name', columns[i]);
+      input1.setAttribute('placeholder', columns[i]);
+      input1.setAttribute('id', columns[i]);
+      label.setAttribute('for', columns[i]);
+      form.appendChild(label)
+      form.appendChild(input1);
+    }
+
+    // Create a submit button
+    var submitBtn = document.createElement('input');
+    submitBtn.setAttribute('type', 'submit');
+    submitBtn.setAttribute('value', 'Submit');
+    submitBtn.textContent = 'Submit';
+    form.appendChild(submitBtn);
+
+    //create a reset filter button
+    var resetBtn = document.createElement('button');
+    resetBtn.setAttribute('id', 'resetBtn');
+    resetBtn.setAttribute('type', 'button');
+    resetBtn.textContent = 'Reset Filters';
+    resetBtn.addEventListener('click', resetTextFilter);
+    form.appendChild(resetBtn);
+
+    var section = document.getElementById('fitlerHorarioSection');
+    section.appendChild(form);
 
 
+    form.addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form submission to the server
+      // Loop through form inputs and log their values
+      var inputs = form.querySelectorAll('input');
+      inputs.forEach(function(input) {
+        if(input.value!="" && input.name!=""){
+          console.log("Filtering by:", input.name, "with value:", input.value);
+          setTextFilter(input)
+        }
+      });
+    });
+
+}
+
+function setTextFilter(input){
+    console.log(input.name + ': ' + input.value)
+    inputValues = input.value.split(";")
+    keywordsToFilter = ""
+    if(!input.name.toLowerCase().includes("data"))
+      for(var i=0;i!=inputValues.length;i++){
+        if(i==0)
+          keywordsToFilter = inputValues[i]
+        else
+        keywordsToFilter = keywordsToFilter + ";" + inputValues[i]
+        console.log("keywords to filter: " + keywordsToFilter)
+      }
+    else{
+      var components = input.value.split("-");
+      console.log("data splitada: " + components[0])
+      // Rearrange the components to the desired format
+      var formattedDate = components[2] + '/' + components[1] + '/' + components[0];
+      keywordsToFilter = formattedDate
+      console.log("keywords to filter: " + keywordsToFilter)
+    }
+
+    table.addFilter(input.name, "keywords", keywordsToFilter, {separator :";"});
+}
+
+function resetTextFilter(){
+  table.clearFilter();
+  var inputs = form.querySelectorAll('input');
+  inputs.forEach(function(input) {
+    if(input.type!="submit")
+      input.value = '';
+});
+}
+
+function tipoDeInputASerCriado(nomeDaColuna){
+  if(nomeDaColuna.toLowerCase().includes("hora"))
+    return 'time';
+  else if(nomeDaColuna.toLowerCase().includes("data"))
+    return 'date';
+  else
+    return 'text';
+
+  
+}
 
 // Criar a tabela da caracterização de salas
 function createSecondTable(){
-  if (firstTimeOpeningCaracterizaocaoSalas){
     console.log("Dentro da criar second table")
-    firstTimeOpeningCaracterizaocaoSalas = false
-    table = new Tabulator("#table2", {
+    table2 = new Tabulator("#table2", {
       data: csvLinesCaracterizacaoSalas.map(line => {
         var values = line.split(';');
         var rowData = {};
@@ -232,16 +352,14 @@ function createSecondTable(){
         });
         return rowData;
       }),
-      columnsCaracterizacaoSalas: columnsCaracterizacaoSalas.map(column => ({ title: column, field: column})),
+      columns: columnsCaracterizacaoSalas.map(column => ({ title: column, field: column})),
       layout: "fitDataTable",
       pagination: "local",
       paginationSizeSelector:[20, 50, 100],
       paginationSize: 20
     });
-  }else{
-
-  }
 }
+
 
 //verificar se os campos são data
 function hasData(column){
@@ -311,58 +429,7 @@ var headerMenu = function(){
 };
 
 //filtrar colunas pelo nome
-var minMaxFilterEditor = function(cell, onRendered, success, cancel, editorParams){
 
-  var end;
-
-  var container = document.createElement("span");
-
-  //create and style inputs
-  var start = document.createElement("input");
-  start.setAttribute("type", "number");
-  start.setAttribute("placeholder", "Min");
-  start.setAttribute("min", 0);
-  start.setAttribute("max", 100);
-  start.style.padding = "4px";
-  start.style.width = "50%";
-  start.style.boxSizing = "border-box";
-
-  start.value = cell.getValue();
-
-  function buildValues(){
-      success({
-          start:start.value,
-          end:end.value,
-      });
-  }
-
-  function keypress(e){
-      if(e.keyCode == 13){
-          buildValues();
-      }
-
-      if(e.keyCode == 27){
-          cancel();
-      }
-  }
-
-  end = start.cloneNode();
-  end.setAttribute("placeholder", "Max");
-
-  start.addEventListener("change", buildValues);
-  start.addEventListener("blur", buildValues);
-  start.addEventListener("keydown", keypress);
-
-  end.addEventListener("change", buildValues);
-  end.addEventListener("blur", buildValues);
-  end.addEventListener("keydown", keypress);
-
-
-  container.appendChild(start);
-  container.appendChild(end);
-
-  return container;
-}
 
 function minMaxFilterFunction(headerValue, rowValue, rowData, filterParams){
   //headerValue - the value of the header filter element
