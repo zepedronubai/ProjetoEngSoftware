@@ -24,6 +24,7 @@ nav {
     display: flex;
     flex-direction: row;
     justify-content: space-between  ;
+    z-index:12;
 }
 
 ul {
@@ -33,6 +34,7 @@ ul {
     background-color: #313644;
     position: fixed;
     height: 100%;
+    z-index: 11;
 }
 
 li a {
@@ -41,6 +43,7 @@ li a {
     color: white;
     padding: 12px 16px;
     text-decoration: none;
+
 }
 
 li a.active {
