@@ -1,3 +1,6 @@
+/**
+ * Atributos:
+ */
 var fileContent;
 var titulos = [];
 var linhas = [];
@@ -9,13 +12,15 @@ var columnsCaracterizacaoSalas;
 var csvLines;
 var columns;
 var firstTimeOpeningCaracterizaocaoSalas = true
-
-//filterHorarioForm
 var form
-
 var botao = document.getElementById("botaoDarkTheme")
 var count = 0;
+
 botao.addEventListener("click",darkTheme,false);
+
+/**
+ * Função para corrigir bug onde quando se clicava, ele assumia que era clicado 2 vezes então não fazia nada.
+ */
 function darkTheme(){
     count++;
     if (count % 2 == 0){
@@ -25,66 +30,62 @@ function darkTheme(){
      
 }
 
+/**
+ * Lógica para lidar com os butões (escolha do ficheiro e download do ficheiro csv). 
+ */
 document.getElementById("download-csv").addEventListener("click", function(){
   table.download("csv", "data.csv");
 });
 
-let oi=0
-document.getElementById("botaoteste").addEventListener("click", function(){
-  testeLeitura();
-  oi++
+document.getElementById("ficheiro").addEventListener("change", (event)=>{
+  const file = event.target.files[0];
+  const reader = new FileReader();
+  console.log("ois")
+  //leitor do ficheiro
+  reader.onload = function () {
+    const content = reader.result;
+    fileContent = content;
+    filtrarFile(content);
+  };
+
+  reader.onerror = function () {
+    console.error('Error reading the file');
+  };
+
+  reader.readAsText(file,'utf-8')
 });
 
-function testeLeitura(){
-  if(oi != 0)
-    table.setFilter("Turma", "=", "DFB1");
-  else
-  table.addFilter("Dia da s   emana", "=", "Qua");
-}
 
-
-
-  document.getElementById("ficheiro").addEventListener("change", (event)=>{
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    console.log("ois")
-    //leitor do ficheiro
-    reader.onload = function () {
-        const content = reader.result;
-        fileContent = content;
-        filtrarFile(content);
-    };
-
-    reader.onerror = function () {
-        console.error('Error reading the file');
-    };
-
-    reader.readAsText(file,'utf-8')
-});
-
-//dar split com ";" e organizar as linhas num vetor
+/**
+ * Função que dá Split ao texto com ";" e organiza as linhas num vetor
+ * @param {string} content - o conteúdo do ficheiro csv inserido após clicar no botão "Escolher Ficheiro"
+ */
 function filtrarFile(content){
 
-  // Split CSV data into lines
+  // Separa os dados do ficheiro CSV em linhas
   csvLines = content.split('\n');
 
-  // Parse the first line to get column headers
+  // Separa o primeiro vetor por ";" onde vão ficar os títulos de cada coluna (column headers)
   columns = csvLines[0].split(';');
 
-  // Remove the first line (column headers) from csvLines
+  // Remove a primeira linha (column headers) de csvLines
   csvLines.shift();
+
   console.log(columns)
   createTable();
 }
 
-//filtros extra
+/**
+ * Editor das datas.
+ * @param {*} cell - A célula editável
+ * @param {*} onRendered - Função que é chamada quando o editor é renderizado
+ * @param {*} success - Função chamada para passar com sucesso o valor atualizado ao Tabulator
+ * @param {*} cancel - Função chamada para abortar a edição e retorna para a célula normal 
+ */
 var dateEditor = function(cell, onRendered, success, cancel){
-  //cell - the cell component for the editable cell
-  //onRendered - function to call when the editor has been rendered
-  //success - function to call to pass thesuccessfully updated value to Tabulator
-  //cancel - function to call to abort the edit and return to a normal cell
 
-  //create and style input
+  //Lógica para criar e dar "style" ao input.
+
   var cellValue = luxon.DateTime.fromFormat(cell.getValue(), "dd/MM/yyyy").toFormat("yyyy-MM-dd"),
   input = document.createElement("input");
 
@@ -96,11 +97,17 @@ var dateEditor = function(cell, onRendered, success, cancel){
 
   input.value = cellValue;
 
+  /**
+   * Função chamada no dateEditor para reformatar o input
+   */
   onRendered(function(){
       input.focus();
       input.style.height = "100%";
   });
 
+  /**
+   * Função de auxílio à edição das datas.
+   */
   function onChange(){
       if(input.value != cellValue){
           success(luxon.DateTime.fromFormat(input.value, "yyyy-MM-dd").toFormat("dd/MM/yyyy"));
@@ -108,9 +115,12 @@ var dateEditor = function(cell, onRendered, success, cancel){
           cancel();
       }
   }
-  //submit new value on blur or change
+  //Lógica de style para edição das datas.
+
   input.addEventListener("blur", onChange);
-  //submit new value on enter
+  
+  // Quando em edição da data , ENTER para mudar com sucesso e ESC para cancelar a edição.
+
   input.addEventListener("keydown", function(e){
       if(e.keyCode == 13){
           onChange();
@@ -123,8 +133,17 @@ var dateEditor = function(cell, onRendered, success, cancel){
   return input;
 };
 
+/**
+ * Editor dos horários (parecido ao das datas)
+ * @param {*} cell - A célula editável
+ * @param {*} onRendered - Função que é chamada quando o editor é renderizado
+ * @param {*} success - Função chamada para passar com sucesso o valor atualizado ao Tabulator
+ * @param {*} cancel - Função chamada para abortar a edição e retorna para a célula normal 
+ */
 var timeEditor = function(cell, onRendered, success, cancel){
-  //create and style input
+  
+  //Lógica para criar e dar "style" ao input.
+
   var cellValue = luxon.DateTime.fromFormat(cell.getValue(), "HH:mm:ss").toFormat("HH:mm:ss"),
   input = document.createElement("input");
 
@@ -134,15 +153,21 @@ var timeEditor = function(cell, onRendered, success, cancel){
   input.style.width = "100%";
   input.style.boxSizing = "border-box";
 
-  // Set today's date along with the time
+  // Definir o dia e hora atual
   var today = luxon.DateTime.local().toISODate();
   input.value = today + 'T' + cellValue;
 
+  /**
+   * Função chamada no timeEditor para reformatar o input
+   */
   onRendered(function(){
       input.focus();
       input.style.height = "100%";
   });
 
+  /**
+   * Função de auxílio à edição dos horários (horas).
+   */
   function onChange(){
       // Construct the full datetime string using today's date and the selected time
       var selectedTime = input.value;
@@ -452,4 +477,97 @@ function minMaxFilterFunction(headerValue, rowValue, rowData, filterParams){
       }
 
   return true; //must return a boolean, true if it passes the filter.
+}
+
+function createFilterCaracterizacaoForm(){
+  // Create a form element
+    form = document.createElement('form');
+
+    // Set form attributes (optional)
+    form.setAttribute('id', 'CaracterizacaoForm');
+    form.setAttribute('action', 'submit.php');
+    form.setAttribute('method', 'post');
+     console.log("criou")
+    for(let i=0;i!=columnsCaracterizacaoSalas.length;i++){
+
+      //label para cada input
+      var label = document.createElement('label');
+      label.textContent = columnsCaracterizacaoSalas[i];
+      //para cada elemento do titulo, criar um input para ser filtrado
+      console.log(columnsCaracterizacaoSalas[i])
+      var input1 = document.createElement('input');
+      var tipoDeInput = tipoDeInputASerCriado(columnsCaracterizacaoSalas[i])
+      input1.setAttribute('type', tipoDeInput);
+      input1.setAttribute('name', columnsCaracterizacaoSalas[i]);
+      input1.setAttribute('placeholder', columnsCaracterizacaoSalas[i]);
+      input1.setAttribute('id', columnsCaracterizacaoSalas[i]);
+      label.setAttribute('for', columnsCaracterizacaoSalas[i]);
+      form.appendChild(label)
+      form.appendChild(input1);
+    }
+
+    // Create a submit button
+    var submitBtn = document.createElement('input');
+    submitBtn.setAttribute('type', 'submit');
+    submitBtn.setAttribute('value', 'Submit');
+    submitBtn.textContent = 'Submit';
+    form.appendChild(submitBtn);
+
+    //create a reset filter button
+    var resetBtn = document.createElement('button');
+    resetBtn.setAttribute('id', 'resetBtn2');
+    resetBtn.setAttribute('type', 'button');
+    resetBtn.textContent = 'Reset Filters';
+    resetBtn.addEventListener('click', resetTextFilter2);
+    form.appendChild(resetBtn);
+
+    var section = document.getElementById('fitlercaracterizacaoSection');
+    section.appendChild(form);
+
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form submission to the server
+      // Loop through form inputs and log their values
+      var inputs = form.querySelectorAll('input');
+      inputs.forEach(function(input) {
+        if(input.value!="" && input.name!=""){
+          console.log("Filtering by:", input.name, "with value:", input.value);
+          setTextFilter2(input)
+        }
+      });
+    });
+
+}
+
+function resetTextFilter2(){
+  table2.clearFilter();
+  var inputs = form.querySelectorAll('input');
+  inputs.forEach(function(input) {
+    if(input.type!="submit")
+      input.value = '';
+});
+}
+
+function setTextFilter2(input){
+  console.log(input.name + ': ' + input.value)
+  inputValues = input.value.split(";")
+  keywordsToFilter = ""
+  if(!input.name.toLowerCase().includes("data"))
+    for(var i=0;i!=inputValues.length;i++){
+      if(i==0)
+        keywordsToFilter = inputValues[i]
+      else
+      keywordsToFilter = keywordsToFilter + ";" + inputValues[i]
+      console.log("keywords to filter: " + keywordsToFilter)
+    }
+  else{
+    var components = input.value.split("-");
+    console.log("data splitada: " + components[0])
+    // Rearrange the components to the desired format
+    var formattedDate = components[2] + '/' + components[1] + '/' + components[0];
+    keywordsToFilter = formattedDate
+    console.log("keywords to filter: " + keywordsToFilter)
+  }
+
+  table2.addFilter(input.name, "keywords", keywordsToFilter, {separator :";"});
 }
