@@ -204,6 +204,7 @@ var timeEditor = function(cell, onRendered, success, cancel){
 function createTable(){
   // Create Tabulator instance
   table = new Tabulator("#table", {
+    maxWidth:"80%",
     data: csvLines.map(line => {
       var values = line.split(';');
       var rowData = {};
@@ -213,11 +214,12 @@ function createTable(){
       return rowData;
     }),
     columns: columns.map(column => ({ title: column, field: column, editor: hasData(column) ? dateEditor : hasHour(column) ? timeEditor : 'input',headerMenu:headerMenu })),
-    layout: "fitDataTable",
+    layout: "fitDataStretch",
     resizableColumns:false,
     pagination: "local",
     paginationSizeSelector:[20, 50, 100],
     paginationSize: 20
+     
   });
   //depois de criar a tabela, cria um form para filtrá-la
   createFilterHorarioForm()

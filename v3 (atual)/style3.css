@@ -368,5 +368,26 @@ input:checked + .slider:before {
 }
 
 
+.filter-modal-btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: fit-content;
+  height: 45px;
+  border: none;
+  padding: 0px 15px;
+  border-radius: 5px;
+  background-color: rgb(49, 49, 83);
+  gap: 10px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.filter-modal-btn:hover{
+  background-color: rgb(58, 58, 94);
+}
+
+
 
 
