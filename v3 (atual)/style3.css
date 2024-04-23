@@ -388,6 +388,11 @@ input:checked + .slider:before {
   background-color: rgb(58, 58, 94);
 }
 
+.filtercaracterizacaoSection{
+    margin-left: 15%;
+    text-align:center;
+}
+
 
 
 

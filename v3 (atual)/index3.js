@@ -385,6 +385,7 @@ function createSecondTable(){
       paginationSizeSelector:[20, 50, 100],
       paginationSize: 20
     });
+    createFilterCaracterizacaoForm()
 }
 
 
