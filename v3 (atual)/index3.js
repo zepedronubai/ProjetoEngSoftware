@@ -169,11 +169,12 @@ var timeEditor = function(cell, onRendered, success, cancel){
    * Função de auxílio à edição dos horários (horas).
    */
   function onChange(){
-      // Construct the full datetime string using today's date and the selected time
+
+      // Constrói a string datetime completa utilizando a data de hoje e a hora selecionada
       var selectedTime = input.value;
       var fullDatetime = today + 'T' + selectedTime;
 
-      // Parse the full datetime string to ensure it's valid
+      // Analisa a string de caracteres datetime completa para garantir que é válida
       var parsedDatetime = luxon.DateTime.fromISO(fullDatetime);
 
       if(parsedDatetime.isValid){
@@ -182,9 +183,10 @@ var timeEditor = function(cell, onRendered, success, cancel){
           cancel();
       }
   }
-  //submit new value on blur or change
+  //Lógica de style para edição das datas.
   input.addEventListener("blur", onChange);
-  //submit new value on enter
+
+  //// Quando em edição da data , ENTER para mudar com sucesso e ESC para cancelar a edição.
   input.addEventListener("keydown", function(e){
       if(e.keyCode == 13){
           onChange();
@@ -197,12 +199,12 @@ var timeEditor = function(cell, onRendered, success, cancel){
   return input;
 };
 
-
-
-
-
+/**
+ * Função que cria a tabela usando o Tabulator
+ */
 function createTable(){
-  // Create Tabulator instance
+
+  // Cria instância do Tabulator
   table = new Tabulator("#table", {
     maxWidth:"80%",
     data: csvLines.map(line => {
@@ -221,16 +223,16 @@ function createTable(){
     paginationSize: 20
      
   });
-  //depois de criar a tabela, cria um form para filtrá-la
+  //Depois de criar a tabela, cria um form para filtrá-la
   createFilterHorarioForm()
 }
 
-//handlers da tabela caracterização sala
+//Lógica para handle da tabela caracterização sala
 
 document.getElementById("fileCaracterizacaoSalas").addEventListener("change", (event)=>{
   const file = event.target.files[0];
   const reader = new FileReader();
-  //leitor do ficheiro
+  //Leitor do ficheiro
   reader.onload = function () {
       const content = reader.result;
       fileContent = content;
@@ -244,17 +246,19 @@ document.getElementById("fileCaracterizacaoSalas").addEventListener("change", (e
   reader.readAsText(file,'utf-8')
 });
 
-
+/**
+ * Função que filtra o ficheiro de caracterização das salas
+ * @param {string} content - o conteúdo do ficheiro CaracterizacaoSalas.csv inserido após clicar no botão "Escolher Ficheiro"
+ */
 function filtrarFileCaracterizacaoSalas(content){
   
-  
-  // Split CSV data into lines
+  // Dividir dados CSV por linhas
   csvLinesCaracterizacaoSalas = content.split('\n');
 
-  // Parse the first line to get column headers
+  // Analisa a primeira linha para obter os cabeçalhos das colunas
   columnsCaracterizacaoSalas = csvLinesCaracterizacaoSalas[0].split(';');
 
-  // Remove the first line (column headers) from csvLines
+  // Remover a primeira linha (cabeçalhos de coluna) de csvLines
   csvLinesCaracterizacaoSalas.shift();
 
   console.log(csvLinesCaracterizacaoSalas[0])
@@ -262,22 +266,24 @@ function filtrarFileCaracterizacaoSalas(content){
   createSecondTable();
 }
 
-//depois de criar a tabela é chamado para criar o form de filtro para o horario
+/**
+ * Depois de criar a tabela é chamado para criar o form de filtro para o horario
+ */
 function createFilterHorarioForm(){
-  // Create a form element
+    // Cria um elemento de formulário
     form = document.createElement('form');
 
-    // Set form attributes (optional)
+    // Definir atributos do formulário (opcional)
     form.setAttribute('id', 'myForm');
     form.setAttribute('action', 'submit.php');
     form.setAttribute('method', 'post');
 
     for(let i=0;i!=columns.length;i++){
 
-      //label para cada input
+      //Label para cada input
       var label = document.createElement('label');
       label.textContent = columns[i]; 
-      //para cada elemento do titulo, criar um input para ser filtrado
+      //Para cada elemento do titulo, cria um input para ser filtrado
       console.log(columns[i])
       var input1 = document.createElement('input');
       var tipoDeInput = tipoDeInputASerCriado(columns[i])
@@ -290,14 +296,14 @@ function createFilterHorarioForm(){
       form.appendChild(input1);
     }
 
-    // Create a submit button
+    //Lógica do botão de submit
     var submitBtn = document.createElement('input');
     submitBtn.setAttribute('type', 'submit');
     submitBtn.setAttribute('value', 'Submit');
     submitBtn.textContent = 'Submit';
     form.appendChild(submitBtn);
 
-    //create a reset filter button
+    //Lógica do botão de reset
     var resetBtn = document.createElement('button');
     resetBtn.setAttribute('id', 'resetBtn');
     resetBtn.setAttribute('type', 'button');
@@ -310,8 +316,11 @@ function createFilterHorarioForm(){
 
 
     form.addEventListener('submit', function(event) {
-      event.preventDefault(); // Prevent form submission to the server
-      // Loop through form inputs and log their values
+      
+      //Impedir a submissão de formulários ao servidor
+      event.preventDefault();
+
+      //Percorrer as entradas do formulário e registar os seus valores
       var inputs = form.querySelectorAll('input');
       inputs.forEach(function(input) {
         if(input.value!="" && input.name!=""){
@@ -323,6 +332,10 @@ function createFilterHorarioForm(){
 
 }
 
+/**
+ * Dá handle do input (de um dos campos de filtragem) para filtrar de acordo com a keyword introduzida no input
+ * @param {string} input - keyword introduzida
+ */
 function setTextFilter(input){
     console.log(input.name + ': ' + input.value)
     inputValues = input.value.split(";")
@@ -338,7 +351,8 @@ function setTextFilter(input){
     else{
       var components = input.value.split("-");
       console.log("data splitada: " + components[0])
-      // Rearrange the components to the desired format
+
+      // Reorganiza as componentes de acordo com o formato pretendido
       var formattedDate = components[2] + '/' + components[1] + '/' + components[0];
       keywordsToFilter = formattedDate
       console.log("keywords to filter: " + keywordsToFilter)
@@ -347,6 +361,9 @@ function setTextFilter(input){
     table.addFilter(input.name, "keywords", keywordsToFilter, {separator :";"});
 }
 
+/**
+ * Dá clear no filter, limpando todos os campos
+ */
 function resetTextFilter(){
   table.clearFilter();
   var inputs = form.querySelectorAll('input');
@@ -356,6 +373,11 @@ function resetTextFilter(){
 });
 }
 
+/**
+ * Retorna o tipo de input (hora/data/texto(salas,etc...)) de acordo com o nomeDaColuna
+ * @param {string} nomeDaColuna 
+ * @returns tipo de input (hora/data/texto(salas,etc...))
+ */
 function tipoDeInputASerCriado(nomeDaColuna){
   if(nomeDaColuna.toLowerCase().includes("hora"))
     return 'time';
@@ -367,7 +389,9 @@ function tipoDeInputASerCriado(nomeDaColuna){
   
 }
 
-// Criar a tabela da caracterização de salas
+/**
+ * Função que criar a tabela da caracterização de salas (em baixo da tabela de horário)
+ */
 function createSecondTable(){
     console.log("Dentro da criar second table")
     table2 = new Tabulator("#table2", {
@@ -388,7 +412,11 @@ function createSecondTable(){
 }
 
 
-//verificar se os campos são data
+/**
+ * Função booleana que verifica se o parâmetro column é igual à string "data"
+ * @param {string} column 
+ * @returns boolean (data or not data)
+ */
 function hasData(column){
   columnLower = column.toLowerCase()
   data = "data"
@@ -399,6 +427,11 @@ function hasData(column){
     return false
 }
 
+/**
+ * Função booleana que verifica se o parâmetro column é igual à string "hora"
+ * @param {string} column 
+ * @returns boolean (hora or not hora)
+ */
 function hasHour(column){
   columnLower = column.toLowerCase()
   data = "hora"
@@ -409,19 +442,19 @@ function hasHour(column){
     return false
 }
 
-//esconder colunas
-var headerMenu = function(){
+  //Lógica para esconder colunas
+  var headerMenu = function(){
   var menu = [];
   var columns = this.getColumns();
 
   for(let column of columns){
 
-      //create checkbox element using font awesome icons
+      //Cria elemento de caixa de verificação utilizando ícones
       let icon = document.createElement("i");
       icon.classList.add("fas");
       icon.classList.add(column.isVisible() ? "fa-check-square" : "fa-square");
 
-      //build label
+      //Constrói a label
       let label = document.createElement("span");
       let title = document.createElement("span");
 
@@ -430,17 +463,18 @@ var headerMenu = function(){
       label.appendChild(icon);
       label.appendChild(title);
 
-      //create menu item
+      //Cria o menu
       menu.push({
           label:label,
           action:function(e){
-              //prevent menu closing
+
+              //Previne fecho do menu
               e.stopPropagation();
 
-              //toggle current column visibility
+              //Alterna a visibilidade da coluna atual
               column.toggle();
 
-              //change menu item icon
+              //Altera o ícone do item do menu
               if(column.isVisible()){
                   icon.classList.remove("fa-square");
                   icon.classList.add("fa-check-square");
@@ -455,14 +489,15 @@ var headerMenu = function(){
  return menu;
 };
 
-//filtrar colunas pelo nome
-
-
+/**
+ * Filtra colunas pelo nome
+ * @param {*} headerValue - o valor do elemento de filtro do cabeçalho
+ * @param {*} rowValue - o valor da coluna nesta linha
+ * @param {*} rowData - os dados da linha que está a ser filtrada
+ * @param {*} filterParams - objeto params passado para a propriedade headerFilterFuncParams
+ * @returns boolean (verdadeiro se passar no filtro)
+ */
 function minMaxFilterFunction(headerValue, rowValue, rowData, filterParams){
-  //headerValue - the value of the header filter element
-  //rowValue - the value of the column in this row
-  //rowData - the data for the row being filtered
-  //filterParams - params object passed to the headerFilterFuncParams property
 
       if(rowValue){
           if(headerValue.start != ""){
@@ -478,24 +513,27 @@ function minMaxFilterFunction(headerValue, rowValue, rowData, filterParams){
           }
       }
 
-  return true; //must return a boolean, true if it passes the filter.
+  return true; //Devolve um booleano, verdadeiro se passar no filtro
 }
 
+/**
+ * Função de criação dos filtros do ficheiro CaracterizacaoSalas.csv
+ */
 function createFilterCaracterizacaoForm(){
-  // Create a form element
+  //Cria um elemento de formulário
     form = document.createElement('form');
 
-    // Set form attributes (optional)
+    //Define atributos do formulário (opcional)
     form.setAttribute('id', 'CaracterizacaoForm');
     form.setAttribute('action', 'submit.php');
     form.setAttribute('method', 'post');
      console.log("criou")
     for(let i=0;i!=columnsCaracterizacaoSalas.length;i++){
 
-      //label para cada input
+      //Label para cada input
       var label = document.createElement('label');
       label.textContent = columnsCaracterizacaoSalas[i];
-      //para cada elemento do titulo, criar um input para ser filtrado
+      //Para cada elemento do titulo, cria um input para ser filtrado
       console.log(columnsCaracterizacaoSalas[i])
       var input1 = document.createElement('input');
       var tipoDeInput = tipoDeInputASerCriado(columnsCaracterizacaoSalas[i])
@@ -508,14 +546,14 @@ function createFilterCaracterizacaoForm(){
       form.appendChild(input1);
     }
 
-    // Create a submit button
+    //Lógica de botão de submit
     var submitBtn = document.createElement('input');
     submitBtn.setAttribute('type', 'submit');
     submitBtn.setAttribute('value', 'Submit');
     submitBtn.textContent = 'Submit';
     form.appendChild(submitBtn);
 
-    //create a reset filter button
+    //Lógica de botão de reset filter
     var resetBtn = document.createElement('button');
     resetBtn.setAttribute('id', 'resetBtn2');
     resetBtn.setAttribute('type', 'button');
@@ -528,8 +566,10 @@ function createFilterCaracterizacaoForm(){
 
 
     form.addEventListener('submit', function(event) {
-      event.preventDefault(); // Prevent form submission to the server
-      // Loop through form inputs and log their values
+      //Impede a submissão de formulários ao servidor
+      event.preventDefault();
+
+      //Percorre as entradas do formulário e registar os seus valores
       var inputs = form.querySelectorAll('input');
       inputs.forEach(function(input) {
         if(input.value!="" && input.name!=""){
@@ -541,6 +581,9 @@ function createFilterCaracterizacaoForm(){
 
 }
 
+/**
+ * 2ª Função de reset filter
+ */
 function resetTextFilter2(){
   table2.clearFilter();
   var inputs = form.querySelectorAll('input');
@@ -550,6 +593,10 @@ function resetTextFilter2(){
 });
 }
 
+/**
+ * Dá handle do input (de um dos campos de filtragem) para filtrar de acordo com a keyword introduzida no input
+ * @param {string} input - keyword introduzida
+ */
 function setTextFilter2(input){
   console.log(input.name + ': ' + input.value)
   inputValues = input.value.split(";")
@@ -565,7 +612,7 @@ function setTextFilter2(input){
   else{
     var components = input.value.split("-");
     console.log("data splitada: " + components[0])
-    // Rearrange the components to the desired format
+    //Reorganiza os componentes de acordo com o formato pretendido
     var formattedDate = components[2] + '/' + components[1] + '/' + components[0];
     keywordsToFilter = formattedDate
     console.log("keywords to filter: " + keywordsToFilter)
