@@ -404,7 +404,7 @@ function createSecondTable(){
         return rowData;
       }),
       columns: columnsCaracterizacaoSalas.map(column => ({ title: column, field: column})),
-      layout: "fitDataTable",
+      layout: "fitDataStretch",
       pagination: "local",
       paginationSizeSelector:[20, 50, 100],
       paginationSize: 20
