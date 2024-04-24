@@ -1,3 +1,4 @@
+/** @jest-environment jsdom */
 /**
  * Atributos:
  */
@@ -16,7 +17,8 @@ var form
 var botao = document.getElementById("botaoDarkTheme")
 var count = 0;
 
-botao.addEventListener("click",darkTheme,false);
+if(botao)
+  botao.addEventListener("click",darkTheme,false);
 
 /**
  * Função para corrigir bug onde quando se clicava, ele assumia que era clicado 2 vezes então não fazia nada.
@@ -30,30 +32,40 @@ function darkTheme(){
      
 }
 
+
+
 /**
  * Lógica para lidar com os butões (escolha do ficheiro e download do ficheiro csv). 
  */
-document.getElementById("download-csv").addEventListener("click", function(){
-  table.download("csv", "data.csv");
-});
+downloadcsv = document.getElementById("download-csv"); //feito desta forma para passar no teste
+if(downloadcsv)
+  downloadcsv.addEventListener("click", function(){
+    table.download("csv", "data.csv");
+  });
 
-document.getElementById("ficheiro").addEventListener("change", (event)=>{
-  const file = event.target.files[0];
-  const reader = new FileReader();
-  console.log("ois")
-  //leitor do ficheiro
-  reader.onload = function () {
-    const content = reader.result;
-    fileContent = content;
-    filtrarFile(content);
+
+ficheiroHorario =  document.getElementById("ficheiro")
+if(ficheiroHorario)
+  ficheiroHorario.addEventListener("change", handleFicheiroUpload)
+
+  function handleFicheiroUpload(event){
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    console.log("ois")
+    //leitor do ficheiro
+    reader.onload = function () {
+      const content = reader.result;
+      fileContent = content;
+      filtrarFile(content);
+    };
+
+    reader.onerror = function () {
+      console.error('Error reading the file');
+    };
+
+    reader.readAsText(file,'utf-8')
   };
-
-  reader.onerror = function () {
-    console.error('Error reading the file');
-  };
-
-  reader.readAsText(file,'utf-8')
-});
+ 
 
 
 /**
@@ -61,19 +73,21 @@ document.getElementById("ficheiro").addEventListener("change", (event)=>{
  * @param {string} content - o conteúdo do ficheiro csv inserido após clicar no botão "Escolher Ficheiro"
  */
 function filtrarFile(content){
-
+  if(content!=null){
   // Separa os dados do ficheiro CSV em linhas
-  csvLines = content.split('\n');
+    csvLines = content.split('\n');
 
   // Separa o primeiro vetor por ";" onde vão ficar os títulos de cada coluna (column headers)
-  columns = csvLines[0].split(';');
+    columns = csvLines[0].split(';');
 
   // Remove a primeira linha (column headers) de csvLines
-  csvLines.shift();
-
+    csvLines.shift();
+  }
   console.log(columns)
   createTable();
 }
+
+//module.exports =  {darkTheme,filtrarFile}
 
 /**
  * Editor das datas.
@@ -203,7 +217,6 @@ var timeEditor = function(cell, onRendered, success, cancel){
  * Função que cria a tabela usando o Tabulator
  */
 function createTable(){
-
   // Cria instância do Tabulator
   table = new Tabulator("#table", {
     maxWidth:"80%",
@@ -227,25 +240,34 @@ function createTable(){
   createFilterHorarioForm()
 }
 
-//Lógica para handle da tabela caracterização sala
 
-document.getElementById("fileCaracterizacaoSalas").addEventListener("change", (event)=>{
-  const file = event.target.files[0];
-  const reader = new FileReader();
-  //Leitor do ficheiro
-  reader.onload = function () {
-      const content = reader.result;
-      fileContent = content;
-      filtrarFileCaracterizacaoSalas(content);
-  };
-
-  reader.onerror = function () {
-      console.error('Error reading the file');
-  };
-
-  reader.readAsText(file,'utf-8')
-});
-
+ficheiroCaracterizacaoSala = document.getElementById("fileCaracterizacaoSalas")
+console.log("oi")
+  //Lógica para handle da tabela caracterização sala
+      if(ficheiroCaracterizacaoSala)
+        ficheiroCaracterizacaoSala.addEventListener("change", handleFicheiroSalas)
+    
+      function handleFicheiroSalas(event){
+        console.log("aqui")
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        console.log("ois")
+        //leitor do ficheiro
+        reader.onload = function () {
+          const content = reader.result;
+          fileContent = content;
+          filtrarFileCaracterizacaoSalas(content);
+        };
+    
+        reader.onerror = function () {
+          console.error('Error reading the file');
+        };
+    
+        reader.readAsText(file,'utf-8')
+      };
+     
+ 
+  
 /**
  * Função que filtra o ficheiro de caracterização das salas
  * @param {string} content - o conteúdo do ficheiro CaracterizacaoSalas.csv inserido após clicar no botão "Escolher Ficheiro"
