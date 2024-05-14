@@ -1,4 +1,32 @@
-/** @jest-environment jsdom */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: index3.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: index3.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** @jest-environment jsdom */
 /**
  * Atributos:
  */
@@ -8,14 +36,12 @@ var linhas = [];
 var csvData;
 var table;
 var table2;
-var table3;
 var csvLinesCaracterizacaoSalas;
 var columnsCaracterizacaoSalas;
 var csvLines;
 var columns;
 var firstTimeOpeningCaracterizaocaoSalas = true
-var form;
-var form;
+var form
 var botao = document.getElementById("botaoDarkTheme")
 var count = 0;
 
@@ -50,50 +76,6 @@ ficheiroHorario = document.getElementById("ficheiro")
 if (ficheiroHorario)
   ficheiroHorario.addEventListener("change", handleFicheiroUpload)
 
-<<<<<<< HEAD
-
-ficheiroRealocar =  document.getElementById("realocarficheiro")
-if(ficheiroRealocar)
-  ficheiroRealocar.addEventListener("change", handleFicheiroUploadRealocar)
-
-  function handleFicheiroUpload(event){
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    console.log("ois")
-    //leitor do ficheiro
-    reader.onload = function () {
-      const content = reader.result;
-      fileContent = content;
-      filtrarFile(content);
-    };
-
-    reader.onerror = function () {
-      console.error('Error reading the file');
-    };
-
-    reader.readAsText(file,'utf-8')
-  };
-
-
-  function handleFicheiroUploadRealocar(event){
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    console.log("ois")
-    //leitor do ficheiro
-    reader.onload = function () {
-      const content = reader.result;
-      fileContent = content;
-      filtrarFileRealocar(content);
-    };
-
-    reader.onerror = function () {
-      console.error('Error reading the file');
-    };
-
-    reader.readAsText(file,'utf-8')
-  };
- 
-=======
 function handleFicheiroUpload(event) {
   const file = event.target.files[0];
   const reader = new FileReader();
@@ -112,7 +94,6 @@ function handleFicheiroUpload(event) {
   reader.readAsText(file, 'utf-8')
 };
 
->>>>>>> 7cc1a01e4e9465a6883a0a2eecfdae9486ca79b0
 
 
 /**
@@ -124,12 +105,7 @@ function filtrarFile(content) {
     // Separa os dados do ficheiro CSV em linhas
     csvLines = content.split('\n');
 
-<<<<<<< HEAD
-
-  // Separa o primeiro vetor por ";" onde vão ficar os títulos de cada coluna (column headers)
-=======
     // Separa o primeiro vetor por ";" onde vão ficar os títulos de cada coluna (column headers)
->>>>>>> 7cc1a01e4e9465a6883a0a2eecfdae9486ca79b0
     columns = csvLines[0].split(';');
 
     // Remove a primeira linha (column headers) de csvLines
@@ -277,18 +253,10 @@ function createTable() {
       var rowData = {};
       columns.forEach((column, index) => {
         rowData[column] = values[index];
-
       });
-      console.log(rowData);
-
       return rowData;
     }),
-<<<<<<< HEAD
-
-    columns: columns.map(column => ({ title: column, field: column, editor: hasData(column) ? dateEditor : hasHour(column) ? timeEditor : 'input',headerMenu:headerMenu })),
-=======
     columns: columns.map(column => ({ title: column, field: column, editor: hasData(column) ? dateEditor : hasHour(column) ? timeEditor : 'input', headerMenu: headerMenu })),
->>>>>>> 7cc1a01e4e9465a6883a0a2eecfdae9486ca79b0
     layout: "fitDataStretch",
     resizableColumns: false,
     pagination: "local",
@@ -296,43 +264,12 @@ function createTable() {
     paginationSize: 20
 
   });
-
   //Depois de criar a tabela, cria um form para filtrá-la
   createFilterHorarioForm()
 }
 
 
-
-
 ficheiroCaracterizacaoSala = document.getElementById("fileCaracterizacaoSalas")
-<<<<<<< HEAD
-
-  //Lógica para handle da tabela caracterização sala
-      if(ficheiroCaracterizacaoSala)
-        ficheiroCaracterizacaoSala.addEventListener("change", handleFicheiroSalas)
-    
-      function handleFicheiroSalas(event){
-        console.log("aqui")
-        const file = event.target.files[0];
-        const reader = new FileReader();
-        console.log("ois")
-        //leitor do ficheiro
-        reader.onload = function () {
-          const content = reader.result;
-          fileContent = content;
-          filtrarFileCaracterizacaoSalas(content);
-        };
-    
-        reader.onerror = function () {
-          console.error('Error reading the file');
-        };
-    
-        reader.readAsText(file,'utf-8')
-      };
-     
- 
-  
-=======
 console.log("oi")
 //Lógica para handle da tabela caracterização sala
 if (ficheiroCaracterizacaoSala)
@@ -359,7 +296,6 @@ function handleFicheiroSalas(event) {
 
 
 
->>>>>>> 7cc1a01e4e9465a6883a0a2eecfdae9486ca79b0
 /**
  * Função que filtra o ficheiro de caracterização das salas
  * @param {string} content - o conteúdo do ficheiro CaracterizacaoSalas.csv inserido após clicar no botão "Escolher Ficheiro"
@@ -437,7 +373,7 @@ function createFilterHorarioForm() {
     //Percorrer as entradas do formulário e registar os seus valores
     var inputs = form.querySelectorAll('input');
     inputs.forEach(function (input) {
-      if (input.value != "" && input.name != "") {
+      if (input.value != "" &amp;&amp; input.name != "") {
         console.log("Filtering by:", input.name, "with value:", input.value);
         setTextFilter(input)
       }
@@ -617,13 +553,13 @@ function minMaxFilterFunction(headerValue, rowValue, rowData, filterParams) {
   if (rowValue) {
     if (headerValue.start != "") {
       if (headerValue.end != "") {
-        return rowValue >= headerValue.start && rowValue <= headerValue.end;
+        return rowValue >= headerValue.start &amp;&amp; rowValue &lt;= headerValue.end;
       } else {
         return rowValue >= headerValue.start;
       }
     } else {
       if (headerValue.end != "") {
-        return rowValue <= headerValue.end;
+        return rowValue &lt;= headerValue.end;
       }
     }
   }
@@ -680,21 +616,14 @@ function createFilterCaracterizacaoForm() {
   section.appendChild(form);
 
 
-<<<<<<< HEAD
-    form.addEventListener('submit', function(event) {
-
-      //Impede a submissão de formulários ao servidor
-      event.preventDefault();
-=======
   form.addEventListener('submit', function (event) {
     //Impede a submissão de formulários ao servidor
     event.preventDefault();
->>>>>>> 7cc1a01e4e9465a6883a0a2eecfdae9486ca79b0
 
     //Percorre as entradas do formulário e registar os seus valores
     var inputs = form.querySelectorAll('input');
     inputs.forEach(function (input) {
-      if (input.value != "" && input.name != "") {
+      if (input.value != "" &amp;&amp; input.name != "") {
         console.log("Filtering by:", input.name, "with value:", input.value);
         setTextFilter2(input)
       }
@@ -740,346 +669,6 @@ function setTextFilter2(input) {
     console.log("keywords to filter: " + keywordsToFilter)
   }
 
-<<<<<<< HEAD
-  table2.addFilter(input.name, "keywords", keywordsToFilter, {separator :";"});
-}
-
-
-function filtrarFileRealocar(content){
-  if(content!=null){
-  // Separa os dados do ficheiro CSV em linhas
-    csvLines = content.split('\n');
-
-  // Separa o primeiro vetor por ";" onde vão ficar os títulos de cada coluna (column headers)
-    columns = csvLines[0].split(';');
-
-  // Remove a primeira linha (column headers) de csvLines
-    csvLines.shift();
-  }
-  console.log(columns)
-  createFilterRealocar();
-}
-
-
-
-
-function createTableRealocardsad() {
-  // Cria instância do Tabulator
-  table3 = new Tabulator("#table", {
-    maxWidth:"80%",
-    data: csvLines.map(line => {
-      var values = line.split(';');
-      var rowData = {};
-      columns.forEach((column, index) => {
-        if (index === 5 || index === 6 || index === 7 || index === 8) {
-            rowData[column] = values[index];
-
-        }else{
-
-            rowData[column] = "";
-        }
-      });
-
-      return rowData;
-    }),
-    columns: columns.map(column => ({ title: column, field: column, editor: hasData(column) ? dateEditor : hasHour(column) ? timeEditor : 'input',headerMenu:headerMenu })),
-    layout: "fitDataStretch",
-    resizableColumns:false,
-    pagination: "local",
-    paginationSizeSelector:[20, 50, 100],
-    paginationSize: 20
-
-  });
-  createFilterRealocar();
-}
-
-
-
-
-
-
-function createFilterRealocar(){
-    // Cria um elemento de formulário
-    form = document.createElement('form');
-
-    // Definir atributos do formulário (opcional)
-    form.setAttribute('id', 'myForm');
-    form.setAttribute('action', 'submit.php');
-    form.setAttribute('method', 'post');
-    var x = [];
-
-    for(let i=0;i!=columns.length;i++){
-
-      //Label para cada input
-      var label = document.createElement('label');
-      label.textContent = columns[i];
-      //Para cada elemento do titulo, cria um input para ser filtrado
-      console.log(columns[i])
-      var input1 = document.createElement('input');
-      var tipoDeInput = tipoDeInputASerCriado(columns[i])
-      input1.setAttribute('type', tipoDeInput);
-      input1.setAttribute('name', columns[i]);
-      input1.setAttribute('placeholder', columns[i]);
-      input1.setAttribute('id', columns[i]);
-      label.setAttribute('for', columns[i]);
-      form.appendChild(label)
-      form.appendChild(input1);
-    }
-
-    //Lógica do botão de submit
-    var submitBtn = document.createElement('input');
-    submitBtn.setAttribute('type', 'submit');
-    submitBtn.setAttribute('value', 'Submit');
-    submitBtn.textContent = 'Submit';
-    form.appendChild(submitBtn);
-    var i = 0
-    //Lógica do botão de reset
-    var resetBtn = document.createElement('button');
-    resetBtn.setAttribute('id', 'resetBtn');
-    resetBtn.setAttribute('type', 'button');
-    resetBtn.textContent = 'Reset Filters';
-    resetBtn.addEventListener('click', resetTextFilterRealocar);
-    form.appendChild(resetBtn);
-
-    var section = document.getElementById('fitlerRealocarSection');
-    section.appendChild(form);
-
-
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-
-      //Percorrer as entradas do formulário e registar os seus valores
-      var inputs = form.querySelectorAll('input');
-      inputs.forEach(function(input) {
-
-        if(input.value!="" && input.name!=""){
-          console.log("Filtering by:", input.name, "with value:", input.value);
-             x[i] = setTextFilterRealocar(input)
-             i++;
-        }
-      });
-
-      createTableRealocar(x);
-    });
-
-}
-
-/**
- * Dá handle do input (de um dos campos de filtragem) para filtrar de acordo com a keyword introduzida no input
- * @param {string} input - keyword introduzida
- */
-function setTextFilterRealocar(input){
-    console.log(input.name + ': ' + input.value)
-    inputValues = input.value.split(";")
-    keywordsToFilter = ""
-    if(!input.name.toLowerCase().includes("data"))
-      for(var i=0;i!=inputValues.length;i++){
-        if(i==0)
-          keywordsToFilter = inputValues[i]
-        else
-        keywordsToFilter = keywordsToFilter + ";" + inputValues[i]
-        console.log("keywords to filter: " + keywordsToFilter)
-      }
-    else{
-      var components = input.value.split("-");
-      console.log("data splitada: " + components[0])
-
-      // Reorganiza as componentes de acordo com o formato pretendido
-      var formattedDate = components[2] + '/' + components[1] + '/' + components[0];
-      keywordsToFilter = formattedDate
-      console.log("keywords to filter: " + keywordsToFilter)
-    }
-
-    const x = [input.name,keywordsToFilter];
-    return x;
-}
-
-/**
- * Dá clear no filter, limpando todos os campos
- */
-function resetTextFilterRealocar(){
-    if (table3 !== null){
-        table3.clearFilter();
-    }
-  var inputs = form.querySelectorAll('input');
-  inputs.forEach(function(input) {
-    if(input.type!="submit")
-      input.value = '';
-});
-}
-
-
-
-
-function createTableRealocar(input){
-  // Cria instância do Tabulator
-  table = new Tabulator("#table", {
-    maxWidth:"80%",
-    data: generateFreeSlots(input),
-    columns: columns.map(column => ({ title: column, field: column, editor: hasData(column) ? dateEditor : hasHour(column) ? timeEditor : 'input',headerMenu:headerMenu })),
-    layout: "fitDataStretch",
-    resizableColumns:false,
-    pagination: "local",
-    paginationSizeSelector:[20, 50, 100],
-    paginationSize: 20
-  });
-  //Depois de criar a tabela, cria um form para filtrá-la
-
-}
-
-function generateFreeSlots(input) {
-  let freeSlots = [];
-
-    column=[]
-
-    for(i = 0;i<input.length;i++){
-        switch (input[i][0]) {
-          case 'Curso':
-            column[0]=""
-            continue;
-          case 'Unidade Curricular':
-            column[1]=""
-            continue;
-          case 'Turno':
-            column[2]=""
-            continue;
-          case 'Turma':
-            column[3]=""
-            continue;
-          case 'Inscritos no turno':
-            column[4]=""
-            continue;
-          case 'Dia da semana':
-            column[5]=input[i][1]
-            continue;
-          case 'Hora início da aula':
-            column[6]=input[i][1]+":00"
-            continue;
-          case 'Hora fim da aula':
-            column[7]=input[i][1]+":00"
-            continue;
-          case 'Data da aula':
-            column[8]=input[i][1]
-            continue;
-          case 'Características da sala pedida para a aula':
-            column[9]=""
-            continue;
-          case 'Sala atribuída à aula':
-            column[10]=input[i][1]
-            continue;
-          default:
-            console.log('Bacano para ti, fizeste o impossivel');
-        }
-    }
-    console.log(column)
-    salas = []
-    p = 0
-
-    csvLines.forEach(line => {
-        const values = line.split(';');
-
-        if (values && !salas.includes(values[10])) {
-            salas[p] = values[10];
-            p++;
-        }
-    });
-    console.log(salas);
-
-  csvLines.forEach(line => {
-    const values = line.split(';');
-
-    for(i = 0; i<column.length;i++){
-
-        for(j=0;j<values.length;j++){
-
-            if(values[j] && values[j] === column[i] && column[i]){
-                for(k= 0;k<salas.length;k++){
-                    if(salas[k] !== values[10]){
-
-                    }
-                }
-
-            }
-
-            if(i === 2){
-            break;}
-    }}
-
-
-
-
-
-
-
-
-     if(values[8] === "16/09/2022" && line && values[10]){
-    const room = values[10];
-    const x = values[8].split('/');
-    console.log(values[8])
-
-
-    const occupiedStartTime = new Date(x[2]+"-"+x[1]+"-"+x[0]+"T"+values[6]);
-    const occupiedEndTime = new Date(x[2]+"-"+x[1]+"-"+x[0]+"T"+values[7]);
-    let startTime = new Date(occupiedStartTime);
-    let endTime;
-    if(!values[1])
-
-    // Iterate over occupied time slots and generate free slots
-    while (startTime < occupiedEndTime) {
-      endTime = new Date(startTime);
-      endTime.setHours(startTime.getHours() + 1, startTime.getMinutes() + 30);
-
-      if (endTime > occupiedEndTime) {
-        endTime = new Date(occupiedEndTime);
-      }
-
-      const day = startTime.getDate();
-      const month = startTime.getMonth() + 1; // Months are zero-based, so add 1
-        const year = startTime.getFullYear();
-
-        // Format day and month with leading zeros if necessary
-        const formattedDay = day < 10 ? `0${day}` : day;
-        const formattedMonth = month < 10 ? `0${month}` : month;
-
-        const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
-
-      const hours = startTime.getHours();
-        const minutes = startTime.getMinutes();
-        // Format hours and minutes with leading zeros if necessary
-        const formattedHours = hours < 10 ? `0${hours}` : hours;
-        const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-        const formattedTime = `${formattedHours}:${formattedMinutes}`;
-
-
-        const endhours = endTime.getHours();
-        const endminutes = endTime.getMinutes();
-        // Format hours and minutes with leading zeros if necessary
-        const endformattedHours = endhours < 10 ? `0${endhours}` : endhours;
-        const endformattedMinutes = endminutes < 10 ? `0${endminutes}` : endminutes;
-        const formattedendTime = `${endformattedHours}:${endformattedMinutes}`;
-
-
-        console.log("Sala: "+room+"|  Dia : "+formattedDate+ "| Hora de Inicio : "+formattedTime+ "| Hora de Fim : "+formattedendTime)
-
-
-      // Add free slot with day of the month
-      freeSlots.push({
-        Room: room,
-        Day: startTime.getDate(), // Get the day of the month
-        StartTime: startTime,
-        EndTime: endTime
-      });
-
-      // Move to the next time slot
-      startTime = new Date(endTime);
-    }
-  }});
-  console.log(" DSADSAD " + freeSlots);
-  return freeSlots;
-}
-
-
-=======
   table2.addFilter(input.name, "keywords", keywordsToFilter, { separator: ";" });
 }
 
@@ -1176,5 +765,26 @@ d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/d
       .attr("cy", function (d) { return d.y - 6; });
   }
 
-});
->>>>>>> 7cc1a01e4e9465a6883a0a2eecfdae9486ca79b0
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createFilterCaracterizacaoForm">createFilterCaracterizacaoForm</a></li><li><a href="global.html#createFilterHorarioForm">createFilterHorarioForm</a></li><li><a href="global.html#createSecondTable">createSecondTable</a></li><li><a href="global.html#createTable">createTable</a></li><li><a href="global.html#darkTheme">darkTheme</a></li><li><a href="global.html#dateEditor">dateEditor</a></li><li><a href="global.html#downloadcsv">downloadcsv</a></li><li><a href="global.html#fileContent">fileContent</a></li><li><a href="global.html#filtrarFile">filtrarFile</a></li><li><a href="global.html#filtrarFileCaracterizacaoSalas">filtrarFileCaracterizacaoSalas</a></li><li><a href="global.html#hasData">hasData</a></li><li><a href="global.html#hasHour">hasHour</a></li><li><a href="global.html#minMaxFilterFunction">minMaxFilterFunction</a></li><li><a href="global.html#resetTextFilter">resetTextFilter</a></li><li><a href="global.html#resetTextFilter2">resetTextFilter2</a></li><li><a href="global.html#setTextFilter">setTextFilter</a></li><li><a href="global.html#setTextFilter2">setTextFilter2</a></li><li><a href="global.html#timeEditor">timeEditor</a></li><li><a href="global.html#tipoDeInputASerCriado">tipoDeInputASerCriado</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Tue May 14 2024 17:44:48 GMT+0100 (Hora de verão da Europa Ocidental)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
