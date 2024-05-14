@@ -129,9 +129,10 @@
 
   </section>
 
-  <section class="heatmap-container">
-    <img id="heatmap-image" src=""./ class="centered-image">
-  </section>  
+  <!-- Image section for displaying the heatmap -->
+  <section id="heatmap-section">
+    <img id="heatmap-image" src="" style="display: none; margin: 0 auto;">
+  </section>
 
   <section class="tableclass" id="table"></section>
   <section class="filterHorarioSection" id="fitlerHorarioSection">
@@ -143,26 +144,29 @@
   <script src="index3.js"></script>
 
   <script>
-    // Define a variable to track the image visibility
-    let isImageVisible = false;
-
-    // Add a click event listener to the "Gerar Heatmap" button
-    document.getElementById('generate-heatmap').addEventListener('click', function () {
-      // Toggle the image visibility
-      if (isImageVisible) {
-        // If the image is currently visible, hide it
-        document.getElementById('heatmap-image').style.display = 'none';
-        isImageVisible = false;
+    // JavaScript code for generating the heatmap image and toggling its display
+    let heatmapVisible = false;
+  
+    document.getElementById("generate-heatmap").addEventListener("click", function() {
+      // Assuming you have code here to generate the heatmap image and save it as 'heatmap_salas.jpg'
+  
+      // Toggle heatmap visibility
+      heatmapVisible = !heatmapVisible;
+  
+      if (heatmapVisible) {
+        // Show the image section and hide the table section
+        document.getElementById("table").style.display = "none";
+        document.getElementById("heatmap-image").src = "heatmap_salas.jpg";
+        document.getElementById("heatmap-image").style.display = "block";
       } else {
-        // If the image is currently hidden, show it
-        document.getElementById('heatmap-image').style.display = 'block';
-        // Set the src attribute to display the image
-        document.getElementById('heatmap-image').src = 'heatmap_salas.jpg';
-        isImageVisible = true;
+        // Hide the image section and show the table section
+        document.getElementById("table").style.display = "block";
+        document.getElementById("heatmap-image").style.display = "none";
       }
     });
-
   </script>
+  
+  
 
 </body>
 
