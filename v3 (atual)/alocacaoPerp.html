@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Table with Tabulator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/2.0.0/luxon.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/5.2.1/css/tabulator.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style3.css">
+</head>
+<body>
+    <aside>
+        <ul>
+          <li><a class="active" href="#tabela">Tabela</a></li>
+          <li><a href="./alocacaoUcs.html">Alocações UC</a></li>
+          <li><a href="#candidato">Candidato</a></li>
+          <li><a href="#myfenix">myFenix</a></li>
+        </ul>
+      </aside>
+
+      <nav>
+        <a href="index3.html">
+            <img class="logo" src="images/logoES.png">
+        </a>
+        <div class="toggle-switch">
+            
+          <button id="botaoDarkTheme">
+            <input class="toggle-input" id="toggle" type="checkbox">
+            <label class="toggle-label" for="toggle"></label>
+            
+          </button>
+    
+        </div>
+      </nav>
+    <section class="upload">
+      <form id="classForm">
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject" required>
+    
+        <label for="duration">Duration (minutes):</label>
+        <input type="number" id="duration" name="duration" min="1" required>
+    
+        <label for="preferredDays">Preferred Days:</label>
+        <select id="preferredDays" name="preferredDays" multiple required>
+          <option value="Mon">Monday</option>
+          <option value="Tue">Tuesday</option>
+          <option value="Wed">Wednesday</option>
+          <option value="Thu">Thursday</option>
+          <option value="Fri">Friday</option>
+        </select>
+    
+        <label for="startTime">Start Time:</label>
+        <input type="time" id="startTime" name="startTime" required>
+    
+        <label for="endTime">End Time:</label>
+        <input type="time" id="endTime" name="endTime" required>
+    
+        <button type="button" onclick="suggestSlots()">Suggest Slots</button>
+      </form>
+    
+      <div id="suggestedSlots"></div>
+        
+
+            <script src="alocacaoPerp.js"></script>
+          </section>
+</body>
+</html>

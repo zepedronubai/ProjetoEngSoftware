@@ -29,7 +29,7 @@ function darkTheme(){
       let htmlBody = document.body;
       htmlBody.classList.toggle("dark-mode");      
     }
-     
+    return true;
 }
 
 
@@ -87,7 +87,7 @@ function filtrarFile(content){
   createTable();
 }
 
-//module.exports =  {darkTheme,filtrarFile}
+// module.exports =  {darkTheme,filtrarFile}
 
 /**
  * Editor das datas.
